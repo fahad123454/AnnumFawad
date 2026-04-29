@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Annum Fawad Portfolio — warm cinematic dark theme. All colors HSL. */
+
+@layer base {
+  :root {
+    --background: 30 30% 8%;
+    --foreground: 48 30% 96%;
+
+    --card: 30 25% 12%;
+    --card-foreground: 48 30% 96%;
+
+    --popover: 30 25% 12%;
+    --popover-foreground: 48 30% 96%;
+
+    --primary: 38 92% 60%;
+    --primary-foreground: 30 35% 10%;
+    --primary-glow: 45 95% 72%;
+
+    --secondary: 188 38% 22%;
+    --secondary-foreground: 48 30% 96%;
+
+    --muted: 30 18% 18%;
+    --muted-foreground: 40 14% 70%;
+
+    --accent: 150 48% 55%;
+    --accent-foreground: 150 30% 10%;
+
+    --destructive: 8 78% 55%;
+    --destructive-foreground: 48 30% 96%;
+
+    --border: 30 22% 24%;
+    --input: 30 22% 20%;
+    --ring: 38 92% 60%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 30 30% 7%;
+    --sidebar-foreground: 48 30% 96%;
+    --sidebar-primary: 38 92% 60%;
+    --sidebar-primary-foreground: 30 35% 10%;
+    --sidebar-accent: 30 22% 16%;
+    --sidebar-accent-foreground: 48 30% 96%;
+    --sidebar-border: 30 22% 24%;
+    --sidebar-ring: 38 92% 60%;
+
+    /* Gradients */
+    --gradient-hero:
+      radial-gradient(ellipse at top, hsl(38 92% 60% / 0.22), transparent 55%),
+      radial-gradient(ellipse at bottom right, hsl(150 48% 55% / 0.14), transparent 58%),
+      linear-gradient(135deg, hsl(30 32% 6%), hsl(28 30% 11%));
+    --gradient-text: linear-gradient(135deg, hsl(45 95% 72%), hsl(38 92% 60%) 45%, hsl(150 48% 55%));
+    --gradient-card: linear-gradient(180deg, hsl(30 25% 14% / 0.9), hsl(30 25% 10% / 0.7));
+
+    /* Shadows */
+    --shadow-glow: 0 0 52px hsl(38 92% 60% / 0.35);
+    --shadow-soft: 0 22px 70px -28px hsl(0 0% 0% / 0.75);
+    --shadow-card: 0 26px 80px -32px hsl(38 92% 60% / 0.35);
+  }
+
+  .dark {
+    --background: 30 30% 8%;
+    --foreground: 48 30% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-foreground;
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Syne', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.42);
+    color: hsl(var(--primary-foreground));
+  }
+}
+
+@layer utilities {
+  .bg-hero-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .text-gradient {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card-glow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass {
+    background: hsl(var(--card) / 0.72);
+    border: 1px solid hsl(var(--border));
+    backdrop-filter: blur(18px);
+  }
+
+  .noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.055;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 2.4s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out both;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(3px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

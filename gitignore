@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output — never push this, deploy from CI instead
+dist/
+build/
+
+# Large media files — host these on Cloudinary, S3, or Google Drive instead
+*.mp4
+*.mov
+*.webm
+*.avi
+*.mkv
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Editor/OS junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript cache
+*.tsbuildinfo
