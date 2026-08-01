@@ -1,23 +1,268 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Annum Fawad — Video Editor Portfolio</title>
-    <meta name="description" content="Cinematic video editing, reels, brand ads, and creator content by Annum Fawad. 200+ videos, 2 years of experience." />
-    <meta name="author" content="Annum Fawad" />
+<head>
+<meta charset="UTF-8">
+<title>BLACK CIPHER // Terminal Simulator</title>
+<style>
+  :root{
+    --green:#00ff66;
+    --dim:#0a3d1f;
+    --bg:#000;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--green);
+    font-family:"Courier New", monospace;
+    overflow:hidden;
+    height:100%;
+  }
+  canvas#matrix{
+    position:fixed;
+    top:0;left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    opacity:0.35;
+  }
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:800px;
+    margin:40px auto;
+    padding:20px;
+  }
+  .logo{
+    text-align:center;
+    font-size:2.2em;
+    letter-spacing:6px;
+    text-shadow:0 0 10px var(--green), 0 0 20px var(--green);
+    margin-bottom:0;
+  }
+  .subtitle{
+    text-align:center;
+    color:#0f8;
+    opacity:0.7;
+    margin-top:4px;
+    letter-spacing:2px;
+    font-size:0.8em;
+  }
+  .terminal{
+    background:rgba(0,10,0,0.85);
+    border:1px solid var(--green);
+    border-radius:6px;
+    padding:20px;
+    margin-top:30px;
+    min-height:420px;
+    box-shadow:0 0 25px rgba(0,255,102,0.25);
+    white-space:pre-wrap;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .cursor{
+    display:inline-block;
+    width:8px;
+    background:var(--green);
+    animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{
+    50%{opacity:0;}
+  }
+  .bar-bg{
+    background:var(--dim);
+    border:1px solid var(--green);
+    height:14px;
+    width:100%;
+    margin:6px 0 14px 0;
+    position:relative;
+  }
+  .bar-fill{
+    background:var(--green);
+    height:100%;
+    width:0%;
+    box-shadow:0 0 8px var(--green);
+    transition:width 0.15s linear;
+  }
+  .footer{
+    text-align:center;
+    margin-top:20px;
+    font-size:0.75em;
+    opacity:0.5;
+    letter-spacing:1px;
+  }
+  .restart-btn{
+    display:block;
+    margin:20px auto 0;
+    background:transparent;
+    border:1px solid var(--green);
+    color:var(--green);
+    padding:10px 20px;
+    font-family:inherit;
+    letter-spacing:2px;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .restart-btn:hover{
+    background:var(--green);
+    color:#000;
+  }
+</style>
+</head>
+<body>
 
-    <meta property="og:title" content="Annum Fawad — Video Editor Portfolio" />
-    <meta property="og:description" content="Cinematic video editing, reels, brand ads, and creator content by Annum Fawad." />
-    <meta property="og:type" content="website" />
+<canvas id="matrix"></canvas>
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Ctrl_plus._y" />
-  </head>
+<div class="wrap">
+  <div class="logo">BLACK CIPHER</div>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <div class="terminal" id="terminal"></div>
+
+  <button class="restart-btn" id="restart">RESTART SEQUENCE</button>
+
+ 
+
+<script>
+// ---------- Matrix rain background ----------
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = "01BLACKCIPHER$#@%&*<>/\\";
+const fontSize = 16;
+let columns, drops;
+function initDrops(){
+  columns = Math.floor(canvas.width / fontSize);
+  drops = new Array(columns).fill(1);
+}
+initDrops();
+window.addEventListener('resize', initDrops);
+
+function drawMatrix(){
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#00ff66";
+  ctx.font = fontSize + "px monospace";
+  for(let i=0;i<drops.length;i++){
+    const text = chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 40);
+
+// ---------- Fake terminal sequence ----------
+const term = document.getElementById('terminal');
+
+const lines = [
+  {type:"text", text:"BLACK CIPHER TERMINAL v2.7 — SIMULATION MODE"},
+  {type:"text", text:"----------------------------------------------"},
+  {type:"text", text:"> initializing demo environment..."},
+  {type:"bar", label:"Loading modules"},
+  {type:"text", text:"> establishing simulated connection..."},
+  {type:"text", text:"> target: localhost (this device only)"},
+  {type:"bar", label:"Handshake"},
+  {type:"text", text:"> running fictional protocol scan..."},
+  {type:"text", text:"[SIM] port 22.... OPEN (fake)"},
+  {type:"text", text:"[SIM] port 80.... OPEN (fake)"},
+  {type:"text", text:"[SIM] port 443... OPEN (fake)"},
+  {type:"bar", label:"Decrypting demo payload"},
+  {type:"text", text:"> compiling fake exploit chain (for show only)..."},
+  {type:"bar", label:"Simulated breach"},
+  {type:"text", text:"> ACCESS GRANTED (simulation)"},
+  {type:"text", text:""},
+  {type:"text", text:"  ____  _               _      ____ _       _              "},
+  {type:"text", text:" | __ )| | __ _  ___| | __ / ___(_)_ __ | |__   ___ _ __ "},
+  {type:"text", text:" |  _ \\| |/ _` |/ __| |/ / |     | | '_ \\| '_ \\ / _ \\ '__|"},
+  {type:"text", text:" | |_) | | (_| | (__|   <  | |___ | | |_) | | | |  __/ |   "},
+  {type:"text", text:" |____/|_|\\__,_|\\___|_|\\_\\  \\____|_| .__/|_| |_|\\___|_|   "},
+  {type:"text", text:"                                    |_|                    "},
+  {type:"text", text:""},
+  {type:"text", text:"This was a simulated demo. Nothing on this device or network was touched."},
+  {type:"text", text:"Thanks for watching. — Black Cipher (fictional persona)"}
+];
+
+let lineIndex = 0;
+
+function typeLine(text, callback){
+  let i = 0;
+  const el = document.createElement('div');
+  term.appendChild(el);
+  const interval = setInterval(()=>{
+    el.textContent = text.slice(0, i+1);
+    i++;
+    term.scrollTop = term.scrollHeight;
+    if(i >= text.length){
+      clearInterval(interval);
+      setTimeout(callback, 120);
+    }
+  }, 18);
+}
+
+function runBar(label, callback){
+  const container = document.createElement('div');
+  const labelEl = document.createElement('div');
+  labelEl.textContent = "> " + label + "...";
+  const barBg = document.createElement('div');
+  barBg.className = "bar-bg";
+  const barFill = document.createElement('div');
+  barFill.className = "bar-fill";
+  barBg.appendChild(barFill);
+  container.appendChild(labelEl);
+  container.appendChild(barBg);
+  term.appendChild(container);
+
+  let pct = 0;
+  const interval = setInterval(()=>{
+    pct += Math.random()*12 + 4;
+    if(pct >= 100){
+      pct = 100;
+      barFill.style.width = pct + "%";
+      clearInterval(interval);
+      const done = document.createElement('div');
+      done.textContent = "  [OK]";
+      term.appendChild(done);
+      term.scrollTop = term.scrollHeight;
+      setTimeout(callback, 200);
+      return;
+    }
+    barFill.style.width = pct + "%";
+    term.scrollTop = term.scrollHeight;
+  }, 120);
+}
+
+function runSequence(){
+  if(lineIndex >= lines.length){
+    return;
+  }
+  const item = lines[lineIndex];
+  lineIndex++;
+  if(item.type === "text"){
+    typeLine(item.text, runSequence);
+  } else if(item.type === "bar"){
+    runBar(item.label, runSequence);
+  }
+}
+
+function startAll(){
+  term.innerHTML = "";
+  lineIndex = 0;
+  runSequence();
+}
+
+document.getElementById('restart').addEventListener('click', startAll);
+
+startAll();
+</script>
+
+</body>
 </html>
